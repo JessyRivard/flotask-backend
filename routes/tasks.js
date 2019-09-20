@@ -2,7 +2,15 @@ var express = require("express");
 var router = express.Router();
 var Tasks = require("../models/tasks");
 
-router.get("/", function(req, res, next) {});
+router.get("/", function(req, res, next) {
+  try {
+    Tasks.find({}).then(allTasks => {
+      res.send(allTasks);
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
 
 router.post("/create", function(req, res, next) {
   try {
