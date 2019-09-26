@@ -6,12 +6,11 @@ var taskSchema = new Schema({
   task: { type: String, required: true },
   details: String,
   due: Date,
-  priority: Number,
+  priority: { type: Number, min: 1, max: 5 },
   meta: {
     created: Date,
     lastEdited: Date,
-    lastViewed: Date,
-    completed: Boolean,
+    completed: { type: Boolean, default: false },
     deleted: Boolean
   }
 });
