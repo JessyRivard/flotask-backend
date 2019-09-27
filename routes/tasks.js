@@ -67,4 +67,18 @@ router.post("/update", function(req, res, next) {
   }
 });
 
+router.post("/archive", function(req, res, next) {
+  try {
+    Tasks.findById(req.body.id).then(task => {
+      task.meta.deleted = true;
+      task.meta.lastEdited = new Date();
+      task.save();
+      res.send("Removed Successfully");
+    });
+  } catch (error) {
+    res.send(null, error);
+    next(error);
+  }
+});
+
 module.exports = router;
