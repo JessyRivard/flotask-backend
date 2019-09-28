@@ -7,6 +7,7 @@ var dotenv = require("dotenv").config();
 var mongoose = require("mongoose");
 
 var listsRouter = require("./routes/lists");
+var tasksRouter = require("./routes/tasks");
 var usersRouter = require("./routes/users");
 
 var app = express();
@@ -18,6 +19,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", listsRouter);
+app.use("/api/tasks", tasksRouter);
 app.use("/users", usersRouter);
 
 // connect to mongoDB and monitor connection
@@ -56,7 +58,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.send("error");
 });
 
 module.exports = app;
