@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
+
 var Tasks = require("../models/tasks");
+var Lists = require("../models/lists");
 
 router.get("/", function(req, res, next) {
   try {
