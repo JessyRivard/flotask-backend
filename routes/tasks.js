@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 
 var Tasks = require("../models/tasks");
-var Lists = require("../models/lists");
 
 router.get("/", function(req, res, next) {
   try {
@@ -37,7 +36,7 @@ router.post("/create", function(req, res, next) {
     res.send(msg);
   } catch (error) {
     res.send(null, error);
-    return next(err);
+    return next(error);
   }
 });
 

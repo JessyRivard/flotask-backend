@@ -18,32 +18,39 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", listsRouter);
+app.use("/api/lists", listsRouter);
 app.use("/api/tasks", tasksRouter);
 app.use("/users", usersRouter);
 
 // connect to mongoDB and monitor connection
 try {
-  mongoose.connect(
-    process.env.DB_HOST,
-    {
-      useNewUrlParser: true,
-      user: process.env.DB_USER,
-      pass: process.env.DB_PASS,
-      autoReconnect: true,
-      reconnectTries: 3,
-      reconnectInterval: 5000
-    }
-  );
+  mongoose.connect(process.env.DB_HOST, {
+    useNewUrlParser: true,
+    user: process.env.DB_USER,
+    pass: process.env.DB_PASS,
+    autoReconnect: true,
+    reconnectTries: 3,
+    reconnectInterval: 5000
+  });
 } catch (error) {
   console.log(error);
 }
 var db = mongoose.connection;
-db.on("connecting", function() {console.log("Connecting...")});
-db.on("connected", function() {console.log("Connected successfully")});
-db.on("disconnected", function() {console.log("Connection lost")})
-db.on("error", function() {console.error.bind(console, "connection error:")});
-db.on("reconnectFailed", function() {console.log("Failed to reconnect")})
+db.on("connecting", function() {
+  console.log("Connecting...");
+});
+db.on("connected", function() {
+  console.log("Connected successfully");
+});
+db.on("disconnected", function() {
+  console.log("Connection lost");
+});
+db.on("error", function() {
+  console.error.bind(console, "connection error:");
+});
+db.on("reconnectFailed", function() {
+  console.log("Failed to reconnect");
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
