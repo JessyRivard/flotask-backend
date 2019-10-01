@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 var Lists = require("../models/lists");
+var Tasks = require("../models/tasks");
 
 router.get("/", function(req, res, next) {
   try {
@@ -34,24 +35,28 @@ router.post("/create", function(req, res, next) {
     }
     res.send(msg);
   } catch (error) {
-    res.send(null, error);
-    next(error);
+    return next(error);
   }
 });
 
 router.post("/archive", function(req, res, next) {
 try {
-  Lists.findById(req.body.id).then(list => {
-    list.meta.deleted = true;
-  })
+  Lists.findById(req.body.id)
   .populate("tasks")
   .then(listWithItems => {
-    console.log(listWithItems);
+    listWithItems.meta.deleted = true;
+    listWithItems.tasks.forEach(task => {
+      Tasks.findById(task._id).then(singleTask => {
+        singleTask.meta.deleted = true;
+        singleTask.meta.lastEdited = new Date();
+        singleTask.save();
+      })
+    listWithItems.save();
+    });
   })
-  res.send(null, "Function not ready yet.")
+  res.send("List Archived Successfully.")
 } catch (error) {
-  res.send(error);
-  next(error);
+  return next(error);
 }
 })
 

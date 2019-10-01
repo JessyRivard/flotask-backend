@@ -43,7 +43,6 @@ router.post("/create", function(req, res, next) {
     }
     res.send(msg);
   } catch (error) {
-    res.send(null, error);
     return next(error);
   }
 });
@@ -71,7 +70,6 @@ router.post("/update", function(req, res, next) {
       res.send("Updated Successfully");
     });
   } catch (error) {
-    res.send(null, error);
     return next(err);
   }
 });
@@ -85,8 +83,7 @@ router.post("/archive", function(req, res, next) {
       res.send("Removed Successfully");
     });
   } catch (error) {
-    res.send(null, error);
-    next(error);
+    return next(error);
   }
 });
 
