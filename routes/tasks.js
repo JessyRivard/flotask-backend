@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 var Tasks = require("../models/tasks");
+var Lists = require("../models/lists");
 
 router.get("/", function(req, res, next) {
   try {
@@ -25,10 +26,17 @@ router.post("/create", function(req, res, next) {
         meta: {
           created: new Date(),
           completed: false,
-          deleted: false
+          deleted: false,
+          belongsTo: req.body.list
         }
       });
-      newTask.save();
+      newTask.save(function(error, savedTask) {
+        Lists.findById(savedTask.meta.belongsTo).then(list => {
+          list.tasks.push(savedTask._id);
+          list.save();
+        });
+      });
+
       msg.push("Saved Successfully.");
     } else if (!req.body.task) {
       msg.push("Task name is missing.");

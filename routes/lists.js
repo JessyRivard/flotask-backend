@@ -39,4 +39,20 @@ router.post("/create", function(req, res, next) {
   }
 });
 
+router.post("/archive", function(req, res, next) {
+try {
+  Lists.findById(req.body.id).then(list => {
+    list.meta.deleted = true;
+  })
+  .populate("tasks")
+  .then(listWithItems => {
+    console.log(listWithItems);
+  })
+  res.send(null, "Function not ready yet.")
+} catch (error) {
+  res.send(error);
+  next(error);
+}
+})
+
 module.exports = router;
