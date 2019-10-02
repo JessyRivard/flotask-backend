@@ -11,7 +11,8 @@ var taskSchema = new Schema({
     created: Date,
     lastEdited: Date,
     completed: { type: Boolean, default: false },
-    deleted: Boolean
+    deleted: Boolean,
+    belongsTo: { type: mongoose.Schema.Types.ObjectId, ref: "list", required: true }
   }
 });
 
