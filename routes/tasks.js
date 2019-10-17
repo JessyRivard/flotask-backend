@@ -14,6 +14,16 @@ router.get("/", function(req, res, next) {
   }
 });
 
+router.get("/find/:id", function(req, res, next) {
+  try {
+    Tasks.findById(req.params.id).then(selectedTask => {
+      res.send(selectedTask);
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 router.post("/create", function(req, res, next) {
   try {
     var msg = [];
