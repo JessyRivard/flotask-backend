@@ -27,12 +27,17 @@ router.get("/find/:id", function(req, res, next) {
 router.post("/create", function(req, res, next) {
   try {
     var msg = [];
+    if (req.body.priority == 0) {
+      var priority = undefined;
+    } else {
+      var priority = req.body.priority;
+    }
     if (req.body.task) {
       var newTask = new Tasks({
         task: req.body.task,
         details: req.body.details,
         due: req.body.due,
-        priority: req.body.priority,
+        priority: priority,
         meta: {
           created: new Date(),
           completed: false,
