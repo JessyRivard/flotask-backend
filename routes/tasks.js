@@ -64,21 +64,29 @@ router.post("/create", function(req, res, next) {
 
 router.post("/update", function(req, res, next) {
   try {
-    Tasks.findById(req.body.id).then(task => {
+    Tasks.findById(req.body._id).then(task => {
       if (req.body.task && req.body.task !== task.task) {
         task.task = req.body.task;
       }
       if (req.body.details && req.body.details !== task.details) {
         task.details = req.body.details;
       }
-      if (req.body.due && req.body.due !== task.due) {
-        task.due = req.body.due;
-      }
+      // if (req.body.due && req.body.due !== task.due) {
+      //   task.due = req.body.due;
+      // }
       if (req.body.priority && req.body.priority !== task.priority) {
         task.priority = req.body.priority;
       }
-      if (req.body.completed && req.body.completed !== task.meta.completed) {
-        task.meta.completed = req.body.completed;
+      if (req.body.list && req.body.list !== task.meta.belongsTo) {
+        Lists.findById(task.meta.belongsTo).then(list => {
+          list.tasks.remove(req.body._id)
+          list.save()
+        })
+        Lists.findById(req.body.list).then(list => {
+          list.tasks.push(req.body._id);
+          list.save()
+        })
+        task.meta.belongsTo = req.body.list;
       }
       task.meta.lastEdited = new Date();
       task.save();
