@@ -110,4 +110,17 @@ router.post("/archive", function(req, res, next) {
   }
 });
 
+router.post("/complete", function(req, res, next) {
+  try {
+    Tasks.findById(req.body.id).then(task => {
+      task.meta.completed = true;
+      task.meta.lastEdited = new Date();
+      task.save();
+      res.send("Success");
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;
