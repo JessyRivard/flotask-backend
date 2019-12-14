@@ -112,7 +112,7 @@ router.post("/archive", function(req, res, next) {
 
 router.post("/complete", function(req, res, next) {
   try {
-    Tasks.findById(req.body.id).then(task => {
+    Tasks.findById(req.body._id).then(task => {
       task.meta.completed = true;
       task.meta.lastEdited = new Date();
       task.save();
