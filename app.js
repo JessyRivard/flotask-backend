@@ -34,9 +34,7 @@ try {
     useNewUrlParser: true,
     user: process.env.DB_USER,
     pass: process.env.DB_PASS,
-    autoReconnect: true,
-    reconnectTries: 3,
-    reconnectInterval: 5000
+    useUnifiedTopology: true
   });
 } catch (error) {
   console.log(error);
